@@ -1,0 +1,6 @@
+<script>
+  var redirectTo = window.location.pathname.replace(/\/$/, '');
+  if (redirectTo !== '/') {
+    window.location.href = '/' + redirectTo;
+  }
+</script>
