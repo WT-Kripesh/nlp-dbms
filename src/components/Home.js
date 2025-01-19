@@ -6,10 +6,6 @@ import "./Home.css";
 import logo from "./assets/logo.png";
 
 const Home = () => {
-  const [showModal, setShowModal] = useState(false);
-
-  const handleShow = () => setShowModal(true);
-  const handleClose = () => setShowModal(false);
 
   return (
     <section id="home" className="home-container">
@@ -22,14 +18,9 @@ const Home = () => {
           Leveraging NLP to simplify database interactions by allowing to
           communicate with the database using natural language queries.
         </p>
-        {/* <a href="#features">
-                    <button className="cta-button">Get Started</button>
-                </a> */}
-        <Button variant="primary" onClick={handleShow}>
-          Get Started
-        </Button>
-
-        <SignupModal show={showModal} handleClose={handleClose} />
+        <a href="#features">
+          <button className="cta-button">Get Started</button>
+        </a>
       </div>
     </section>
   );
