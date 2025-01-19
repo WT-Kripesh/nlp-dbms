@@ -4,7 +4,7 @@ import './Features.css';
 const Features = () => {
     const featuresList = [
         { id: 1, title: "Natural Language Query Processing", description: "Quickly converts natural language queries into precise SQL commands.", icon: "📜" },
-        { id: 2, title: "Enhanced user experience", description: "Makes database management accessible to users with minimal technical background, knowledge of SQL not required.", icon: "💡" },
+        { id: 2, title: "Effortless", description: "Makes database management effortless by allowing users to manage database without any knowledge of SQL.", icon: "💡" },
         { id: 3, title: "Scalibility", description: "Capacity to handle large-scale databases with efficiency.", icon: "📈" },
         { id: 4, title: "Intuitive UI", description: "Designed for user-friendly experience to input query and display results.", icon: "🖼️" },
     ];
