@@ -22,7 +22,7 @@ const LoginForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:5000/connect', formData);
+            const response = await axios.post('http://localhost:3001/connect', formData);
             setResponseMessage(response.data.message);
         } catch (error) {
             setResponseMessage('Failed to connect to the database. Please check your credentials.');
