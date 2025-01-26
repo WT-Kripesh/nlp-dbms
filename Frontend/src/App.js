@@ -3,7 +3,7 @@ import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Features from './components/Features';
 import Team from './components/Team';
-import Contact from './components/Contact';
+import Get_started from './components/LoginForm';
 import './App.css';
 import Footer from './components/Footer';
 
@@ -14,7 +14,7 @@ const App = () => {
       <Home />
       <Features />
       <Team />
-      <Contact />
+      <Get_started />
       <Footer/>
     </div>
   );

@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { Button, Modal } from "react-bootstrap";
-import SignupModal from "./SignupModal";
 
 import "./Home.css";
 import logo from "./assets/logo.png";
@@ -18,7 +16,7 @@ const Home = () => {
           Leveraging NLP to simplify database interactions by allowing to
           communicate with the database using natural language queries.
         </p>
-        <a href="#features">
+        <a href="#LoginForm">
           <button className="cta-button">Get Started</button>
         </a>
       </div>
