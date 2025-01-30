@@ -2,11 +2,13 @@ import React, { useState } from "react";
 
 import "./Home.css";
 import logo from "./assets/logo.png";
+import Navbar from './Navbar';
+
 
 const Home = () => {
 
   return (
-    <section id="home" className="home-container">
+  <section id="home" className="home-container">
       <div className="hero-content">
         <img src={logo} alt="Project Logo" className="home-logo" />
         <h1 className="hero-title">

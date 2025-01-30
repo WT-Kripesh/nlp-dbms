@@ -1,0 +1,112 @@
+/* components/HowItWorks.css */
+.how-it-works {
+  max-width: 1200px;
+  height: 108vh;
+  margin: auto;
+  padding: 100px;
+  text-align: center;
+}
+
+.how-it-works h1 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+  font-size: 2.5em;
+  animation: fadeIn 1s ease-in-out;
+}
+.how-it-works img {
+  max-width: 90%;
+  margin:100 auto;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.content-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+.steps-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.step {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.step:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.step.active {
+  background-color: #e9f5ff;
+  border-color: #007bff;
+}
+
+.step h2 {
+  margin: 0;
+  font-size: 1.5em;
+  color: #007bff;
+  transition: color 0.3s ease;
+}
+
+.step p {
+  margin: 10px 0 0;
+  display: none;
+  animation: slideDown 0.5s ease-in-out;
+}
+
+.step.active p {
+  display: block;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.query {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 1s ease-in-out;
+}
+
+.query h2 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+  font-size: 1.8em;
+}
+
+.query img {
+  max-width: 100%;
+  height: 110%;
+  border-radius: 10px;
+}
