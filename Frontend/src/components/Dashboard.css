@@ -1,71 +1,207 @@
+/* Dashboard Layout */
 .dashboard {
-    max-width: 900px;
-    margin: auto;
-    padding: 20px;
-    text-align: center;
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, #111827, #1f2937);
+  color: #f3f4f6;
+  padding: 2rem;
+}
+
+.container {
+  max-width: 80rem;
+  margin: 0 auto;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.header-title {
+  font-size: 1.875rem;
+  font-weight: bold;
+}
+
+.header-icon {
+  width: 2rem;
+  height: 2rem;
+  color: #60a5fa;
+}
+
+/* Card */
+.card {
+  background-color: #1f2937;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border: 1px solid #374151;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color:white;
+}
+
+.card-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #60a5fa;
+}
+
+/* Database Section */
+.database-name {
+  color: #60a5fa;
+}
+
+.database-select {
+  width: 100%;
+  max-width: 300px;
+  background-color: #111827;
+  border: 1px solid #374151;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  color: #f3f4f6;
+  margin-bottom: 1.5rem;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.database-select:focus {
+  outline: none;
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2);
+}
+
+.database-select option {
+  background-color: #1f2937;
+  color: #f3f4f6;
+  padding: 0.5rem;
+}
+
+.tables-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .tables-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
-  
-  label {
-    font-size: 1.2em;
-    margin-top: 10px;
-    display: block;
-  }
-  
-  select, input {
-    width: 80%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
-  .tables-section {
-    text-align: left;
-    margin-top: 20px;
-  }
-  
-  .tables-section ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .tables-section li {
-    padding: 5px;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .results-section {
-    margin-top: 20px;
-  }
-  
-  code {
-    display: block;
-    background: #f4f4f4;
-    padding: 10px;
-    border-radius: 5px;
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-  }
-  
-  th, td {
-    padding: 10px;
-    border: 1px solid #ddd;
-  }
-  
+}
+
+.table-card {
+  background-color: rgba(55, 65, 81, 0.5);
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.table-name {
+  color: #60a5fa;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.table-attributes {
+  font-size: 0.875rem;
+  color: #d1d5db;
+}
+
+/* Query Section */
+.query-input {
+  width: 100%;
+  background-color: #111827;
+  border: 1px solid #374151;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  color: #f3f4f6;
+  margin-bottom: 1rem;
+}
+
+.query-input:focus {
+  outline: none;
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2);
+}
+
+.sql-display {
+  background-color: #111827;
+  border: 1px solid #374151;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+}
+
+.sql-code {
+  color: #34d399;
+}
+
+.execute-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #2563eb;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.execute-button:hover {
+  background-color: #1d4ed8;
+}
+
+/* Results Table */
+.table-container {
+  overflow-x: auto;
+}
+
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.results-table th {
+  background-color: #374151;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #d1d5db;
+}
+
+.results-table td {
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  border-bottom: 1px solid #374151;
+}
+
+.results-table tr:hover {
+  background-color: rgba(55, 65, 81, 0.5);
+  transition: background-color 0.2s;
+}
+
+/* Form Elements */
+.formlabel {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: white;
+  margin-bottom: 0.5rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}

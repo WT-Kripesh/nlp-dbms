@@ -2,6 +2,8 @@ from flask import Flask, request, jsonify
 import mysql.connector
 from mysql.connector import Error
 from flask_cors import CORS
+import pandas as pd
+
 from Query_generator import get_query
 from database_structure import (
     find_all_databases,
@@ -81,8 +83,11 @@ def process_query():
         sql_query = get_query(nl_query, cursor, selected_db)
         cursor.execute(sql_query)
         results = cursor.fetchall()
-
-        return jsonify({"sql_query": sql_query, "results": results}), 200
+        column_names = [desc[0] for desc in cursor.description]
+        df = pd.DataFrame(results)
+        df.columns = column_names
+        json_results = df.to_dict(orient="records")
+        return jsonify({"sql_query": sql_query, "results": json_results}), 200
     except Error as e:
         return jsonify({"error": str(e)}), 400
 

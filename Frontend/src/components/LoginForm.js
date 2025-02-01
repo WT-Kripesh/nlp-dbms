@@ -20,8 +20,7 @@ const LoginForm = ({ setFormData, setDatabases }) => {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:3001/connect', formData);
-            console.log(response);
-            if (response.status==200) {
+            if (response.status===200) {
                 navigate('/dashboard', { state: { formData } });
             } else {
                 setResponseMessage('Failed to connect to the database.');
