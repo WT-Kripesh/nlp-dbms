@@ -1,8 +1,10 @@
 import React,{useState} from 'react';
+import { useNavigate } from 'react-router-dom';
 import './LoginForm.css';
 import axios from 'axios';
 
 const LoginForm = () => {
+    const navigate = useNavigate()
     const [formData, setFormData] = useState({
         host: '',
         username: '',
@@ -24,6 +26,8 @@ const LoginForm = () => {
         try {
             const response = await axios.post('http://localhost:3001/connect', formData);
             setResponseMessage(response.data.message);
+            console.log(response.data.databases);
+            navigate('/dashboard'); 
         } catch (error) {
             setResponseMessage('Failed to connect to the database. Please check your credentials.');
             console.error('Error connecting to the database:', error);

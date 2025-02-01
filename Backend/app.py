@@ -24,8 +24,16 @@ def connect_to_database():
             user=username,
             password=password
         )
+        cursor = connection.cursor()
+        system_databases = ['information_schema', 'mysql', 'performance_schema', 'sys']
+
+        cursor.execute("SHOW DATABASES")
+        databases = cursor.fetchall()
+        list_of_databases = [db[0] for db in databases if db[0] not in system_databases]
+        print(list_of_databases)
+        
         if connection.is_connected():
-            return jsonify({"message": "Connection successful!"}), 200
+            return jsonify({"message": "Connection successful!",'databases':list_of_databases}), 200
     except Error as e:
         return jsonify({"error": str(e)}), 400
     finally:

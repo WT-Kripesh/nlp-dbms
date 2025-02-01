@@ -1,6 +1,5 @@
 // components/HowItWorks.js
 import React, { useState } from 'react';
-import { motion } from "framer-motion";
 import './HowItWorks.css'; // Import the CSS for this component
 import system_flow from "./assets/system_flow.png"
 import query from "./assets/query.png"
