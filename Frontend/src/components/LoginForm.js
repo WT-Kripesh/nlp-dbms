@@ -3,44 +3,42 @@ import { useNavigate } from 'react-router-dom';
 import './LoginForm.css';
 import axios from 'axios';
 
-const LoginForm = () => {
-    const navigate = useNavigate()
-    const [formData, setFormData] = useState({
+const LoginForm = ({ setFormData, setDatabases }) => {
+    const navigate = useNavigate();
+    const [formData, updateFormData] = useState({
         host: '',
         username: '',
         password: ''
     });
-
     const [responseMessage, setResponseMessage] = useState('');
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value
-        });
+        updateFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:3001/connect', formData);
-            setResponseMessage(response.data.message);
-            console.log(response.data.databases);
-            navigate('/dashboard'); 
+            console.log(response);
+            if (response.status==200) {
+                navigate('/dashboard', { state: { formData } });
+            } else {
+                setResponseMessage('Failed to connect to the database.');
+            }
         } catch (error) {
-            setResponseMessage('Failed to connect to the database. Please check your credentials.');
-            console.error('Error connecting to the database:', error);
+            setResponseMessage('Failed to connect to the database.');
+            console.error('Error:', error);
         }
-    };
-
+    };    
+    
     return (
-        <section id="LoginForm" className="contact-container">
-            <h2 className="contact-title">Get Started</h2>
-            <p className="contact-description">
+        <section id="LoginForm" className="login-container">
+            <h2 className="login-title">Get Started</h2>
+            <p className="login-description">
                 Have queries? Enter your credentials for database connection and start querying!
             </p>
-            <form className="contact-form" onSubmit={handleSubmit}>
+            <form className="login-form" onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="host" className="form-label">Host</label>
                     <input

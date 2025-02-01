@@ -1,109 +1,105 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
-import './Dashboard.css';
 
 const Dashboard = () => {
-  const [databases, setDatabases] = useState([]);
-  const [selectedDB, setSelectedDB] = useState('');
-  const [tables, setTables] = useState([]);
-  const [query, setQuery] = useState('');
-  const [sqlQuery, setSqlQuery] = useState('');
-  const [results, setResults] = useState([]);
+    const location = useLocation();
+    const { formData } = location.state || {};
+    const [databases, setDatabases] = useState([]);
+    const [selectedDatabase, setSelectedDatabase] = useState('');
+    const [tables, setTables] = useState([]);
+    const [query, setQuery] = useState('');
+    const [sqlQuery, setSqlQuery] = useState('');
+    const [results, setResults] = useState([]);
 
-  // Fetch available databases on mount
-  useEffect(() => {
-    axios.get('/api/databases') // Adjust the endpoint based on your backend
-      .then(response => setDatabases(response.data))
-      .catch(error => console.error('Error fetching databases:', error));
-  }, []);
+    // Fetch available databases
+    useEffect(() => {
+        const fetchDatabases = async () => {
+            try {
+                const response = await axios.post('http://localhost:3001/get-databases', formData);
+                setDatabases(response.data.databases);
+                console.log(response.data)
+            } catch (error) {
+                console.error('Error fetching databases:', error);
+            }
+        };
+        fetchDatabases();
+    }, [formData]);
 
-  // Fetch tables & attributes when a database is selected
-  useEffect(() => {
-    if (selectedDB) {
-      axios.get(`/api/tables?database=${selectedDB}`)
-        .then(response => setTables(response.data))
-        .catch(error => console.error('Error fetching tables:', error));
-    }
-  }, [selectedDB]);
+    // Handle database selection
+    const handleDatabaseSelect = async (dbName) => {
+        setSelectedDatabase(dbName);
+        try {
+            // Send `USE {database};` to backend
+            await axios.post('http://localhost:3001/select-database', { ...formData, database: dbName });
 
-  // Handle query submission
-  const handleQuerySubmit = () => {
-    axios.post('/api/query', { database: selectedDB, query })
-      .then(response => {
-        setSqlQuery(response.data.sql);
-        setResults(response.data.results);
-      })
-      .catch(error => console.error('Error executing query:', error));
-  };
+            // Fetch tables and attributes
+            const response = await axios.post('http://localhost:3001/get-tables', { ...formData, database: dbName });
+            setTables(response.data.tables);
+        } catch (error) {
+            console.error('Error selecting database:', error);
+        }
+    };
 
-  return (
-    <div className="dashboard">
-      <h1>Database Dashboard</h1>
+    // Handle query submission
+    const handleQuerySubmit = async () => {
+        try {
+            const response = await axios.post('http://localhost:3001/query', { ...formData, query });
+            setSqlQuery(response.data.sql);
+            setResults(response.data.results);
+        } catch (error) {
+            console.error('Error executing query:', error);
+        }
+    };
 
-      {/* Database Selection */}
-      <label>Select Database:</label>
-      <select value={selectedDB} onChange={(e) => setSelectedDB(e.target.value)}>
-        <option value="">-- Select --</option>
-        {databases.map((db, index) => (
-          <option key={index} value={db}>{db}</option>
-        ))}
-      </select>
-
-      {/* Tables & Attributes */}
-      {selectedDB && (
-        <div className="tables-section">
-          <h2>Tables in {selectedDB}</h2>
-          <ul>
-            {tables.map((table, index) => (
-              <li key={index}>
-                <strong>{table.name}</strong> ({table.attributes.join(', ')})
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {/* Query Input */}
-      <div className="query-section">
-        <label>Enter English Query:</label>
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="e.g., Show all employees earning more than $5000"
-        />
-        <button onClick={handleQuerySubmit}>Execute</button>
-      </div>
-
-      {/* Query Results */}
-      {sqlQuery && (
-        <div className="results-section">
-          <h3>Converted SQL Query:</h3>
-          <code>{sqlQuery}</code>
-
-          <h3>Results:</h3>
-          <table>
-            <thead>
-              <tr>
-                {results.length > 0 && Object.keys(results[0]).map((col, index) => (
-                  <th key={index}>{col}</th>
+    return (
+        <div>
+            <h1>Dashboard</h1>
+            
+            {/* Dropdown for databases */}
+            <select onChange={(e) => handleDatabaseSelect(e.target.value)} value={selectedDatabase}>
+                <option value="">Select a Database</option>
+                {databases.map((db) => (
+                    <option key={db} value={db}>{db}</option>
                 ))}
-              </tr>
-            </thead>
-            <tbody>
-              {results.map((row, rowIndex) => (
-                <tr key={rowIndex}>
-                  {Object.values(row).map((val, colIndex) => (
-                    <td key={colIndex}>{val}</td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+            </select>
+
+            {/* Show tables and attributes */}
+            {tables.length > 0 && (
+                <div>
+                    <h2>Tables</h2>
+                    <ul>
+                        {tables.map((table) => (
+                            <li key={table.name}>{table.name} ({table.columns.join(', ')})</li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+
+            {/* Query input and execution */}
+            <textarea value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Enter English query"></textarea>
+            <button onClick={handleQuerySubmit}>Run Query</button>
+
+            {/* Show converted SQL */}
+            {sqlQuery && <p><b>SQL Query:</b> {sqlQuery}</p>}
+
+            {/* Show query results */}
+            {results.length > 0 && (
+                <table>
+                    <thead>
+                        <tr>{Object.keys(results[0]).map((key) => <th key={key}>{key}</th>)}</tr>
+                    </thead>
+                    <tbody>
+                        {results.map((row, index) => (
+                            <tr key={index}>
+                                {Object.values(row).map((val, i) => <td key={i}>{val}</td>)}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            )}
         </div>
-      )}
-    </div>
-  );
+    );
 };
 
 export default Dashboard;

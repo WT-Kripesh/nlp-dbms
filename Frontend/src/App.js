@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
@@ -11,6 +11,7 @@ import './App.css';
 import Footer from './components/Footer';
 
 const App = () => {
+  const [formData, setFormData] = useState(null);
   return (
     <>
     <Navbar />
@@ -19,8 +20,8 @@ const App = () => {
       <Route path="/how-it-works" element={<HowItWorks />} />
       <Route path="/features" element={<Features />} />
       <Route path="/team" element={<Team />} />
-      <Route path="/get-started" element={<Get_started />} />
-      <Route path="/dashboard" element={<Dashboard />} /> {/* New Route */}
+      <Route path="/get-started" element={<Get_started setFormData={setFormData} />} />
+      <Route path="/dashboard" element={<Dashboard formData={formData}/>} />
     </Routes>
     <Footer />
     </>

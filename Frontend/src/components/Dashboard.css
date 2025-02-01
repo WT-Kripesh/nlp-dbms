@@ -1,0 +1,71 @@
+.dashboard {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  label {
+    font-size: 1.2em;
+    margin-top: 10px;
+    display: block;
+  }
+  
+  select, input {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  .tables-section {
+    text-align: left;
+    margin-top: 20px;
+  }
+  
+  .tables-section ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .tables-section li {
+    padding: 5px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .results-section {
+    margin-top: 20px;
+  }
+  
+  code {
+    display: block;
+    background: #f4f4f4;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+  }
+  
