@@ -15,12 +15,9 @@ const Home = () => {
         </h1>
         <p className="home-description">
           Leveraging NLP to simplify database interactions by allowing to
-          communicate with the database using natural language queries.
+          communicate with the database using natural language queries. <Link to="/how-it-works">Learn more</Link>
         </p>
-        <div className='links'>
-        <Link to="/how-it-works">Working</Link>
         <Link to="/get-started"><button className="cta-button">Get Started</button></Link>
-        </div>
       </div>
     </section>
   );
