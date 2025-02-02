@@ -1,0 +1,4 @@
+flask
+mysqlconnector
+flask_cors
+pandas
