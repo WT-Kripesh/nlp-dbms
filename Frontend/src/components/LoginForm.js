@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './LoginForm.css';
 import axios from 'axios';
 
-API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:3001";
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:3001";
 
 const LoginForm = ({ setFormData, setDatabases }) => {
     const navigate = useNavigate();
@@ -21,7 +21,7 @@ const LoginForm = ({ setFormData, setDatabases }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('${API_BASE_URL}/connect', formData);
+            const response = await axios.post(`${API_BASE_URL}/connect`, formData);
             if (response.status===200) {
                 navigate('/dashboard', { state: { formData } });
             } else {

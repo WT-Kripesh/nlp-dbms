@@ -4,7 +4,7 @@ import axios from "axios";
 import { Database, Table2, Terminal, Play } from "lucide-react";
 import "./Dashboard.css";
 
-API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:3001";
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:3001";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -21,7 +21,7 @@ const Dashboard = () => {
     const fetchDatabases = async () => {
       try {
         const response = await axios.get(
-          "${API_BASE_URL}/get-databases",
+          `${API_BASE_URL}/get-databases`,
           formData
         );
         setDatabases(response.data.databases);
@@ -40,7 +40,7 @@ const Dashboard = () => {
       // await axios.post('http://localhost:3001/select-database', { ...formData, database: dbName });
 
       // Fetch tables and attributes
-      const response = await axios.post("${API_BASE_URL}/get-tables", {
+      const response = await axios.post(`${API_BASE_URL}/get-tables`, {
         database: dbName,
       });
       setTables(response.data.tables);
@@ -52,7 +52,7 @@ const Dashboard = () => {
   // Handle query submission
   const handleQuerySubmit = async () => {
     try {
-      const response = await axios.post("${API_BASE_URL}/process_query", {
+      const response = await axios.post(`${API_BASE_URL}/process_query`, {
         database: selectedDatabase,
         query: query,
       });

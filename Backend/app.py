@@ -12,7 +12,7 @@ from database_structure import (
 )
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+CORS(app)
 
 # Global connection and cursor
 connection = None
