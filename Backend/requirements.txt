@@ -1,4 +1,4 @@
 flask
-mysqlconnector
+mysql-connector-python
 flask_cors
 pandas
