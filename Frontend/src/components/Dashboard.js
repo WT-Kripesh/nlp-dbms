@@ -2,11 +2,12 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
-import { Database, Plus, Trash } from "lucide-react";
-import QueryHandler from "./modals/QueryHandler";
+import { Database, Plus, Trash,Edit } from "lucide-react";
+import QueryHandler from "./QueryHandler";
 import CreateTableModal from "./modals/CreateTableModal";
 import InsertRowModal from "./modals/InsertRowModal";
 import UpdateRowModal from "./modals/UpdateRowModal";
+import DeleteTableModal from "./modals/DeleteTableModal"; // Import the new modal
 import "./Dashboard.css"; // Import the CSS file
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:3001";
@@ -20,6 +21,7 @@ const Dashboard = () => {
   const [showCreateTableModal, setShowCreateTableModal] = useState(false);
   const [showInsertModal, setShowInsertModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false); // State for delete modal
   const [selectedTable, setSelectedTable] = useState("");
 
   // Fetch available databases
@@ -66,12 +68,14 @@ const Dashboard = () => {
     }
   };
 
-  // Handle delete table
-  const handleDeleteTable = async () => {
+  // Handle delete table with authentication
+  const handleDeleteTable = async (username, password) => {
     try {
       await axios.post(`${API_BASE_URL}/delete-table`, {
         database: selectedDatabase,
         tableName: selectedTable,
+        username,
+        password,
       });
       // Refresh tables
       const response = await axios.post(`${API_BASE_URL}/get-tables`, {
@@ -155,25 +159,42 @@ const Dashboard = () => {
         {/* Tables and Actions */}
         {selectedDatabase && (
           <section className="card">
-            <div className="card-header">
+            <div className="card-bar">
+          
               <h2 className="card-title">Tables in {selectedDatabase}</h2>
+              <>
+              <button
+                className="action-button"
+                onClick={() => setShowCreateTableModal(true)}
+              >
+                <Plus className="w-4 h-4" />
+                <span>Create Table</span>
+              </button>
+              <button
+                className="action-button delete-button"
+                onClick={() => setShowDeleteModal(true)}
+              >
+                <Trash className="w-4 h-4" />
+                <span>Delete Table</span>
+              </button>
+              </>
             </div>
 
             <div className="tables-grid">
               {Object.keys(tables).map((key) => (
                 <div key={key} className="table-card">
-                  <h4 className="table-name">{key}</h4>
+                  <p className="table-name">{key}</p>
                   <p className="table-attributes">{tables[key].join(", ")}</p>
                   <div className="table-actions">
                     <button
-                      className="action-button"
+                      className="action-button insert-button"
                       onClick={() => {
                         setSelectedTable(key);
                         setShowInsertModal(true);
                       }}
                     >
                       <Plus className="w-4 h-4" />
-                      <span>Insert Row</span>
+                      <span>Insert</span>
                     </button>
                     <button
                       className="action-button"
@@ -183,29 +204,13 @@ const Dashboard = () => {
                       }}
                     >
                       <Edit className="w-4 h-4" />
-                      <span>Update Row</span>
+                      <span>Edit</span>
                     </button>
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="table-actions">
-              <button
-                className="action-button"
-                onClick={() => setShowCreateTableModal(true)}
-              >
-                <Plus className="w-4 h-4" />
-                <span>Create Table</span>
-              </button>
-              <button
-                className="action-button"
-                onClick={handleDeleteTable}
-              >
-                <Trash className="w-4 h-4" />
-                <span>Delete Table</span>
-              </button>
-            </div>
           </section>
         )}
 
@@ -236,6 +241,13 @@ const Dashboard = () => {
           attributes={tables[selectedTable]}
           onClose={() => setShowUpdateModal(false)}
           onUpdate={handleUpdateRow}
+        />
+      )}
+
+      {showDeleteModal && (
+        <DeleteTableModal
+          onClose={() => setShowDeleteModal(false)}
+          onDelete={handleDeleteTable}
         />
       )}
     </div>

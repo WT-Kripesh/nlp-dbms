@@ -1,0 +1,52 @@
+/* TableCard.css */
+.tables-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .tables-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.table-card {
+  background-color: rgba(55, 65, 81, 0.5);
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.table-name {
+  color: #60a5fa;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.table-attributes {
+  font-size: 0.875rem;
+  color: #d1d5db;
+}
+
+.table-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background-color: #2563eb;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.action-button:hover {
+  background-color: #1d4ed8;
+}
