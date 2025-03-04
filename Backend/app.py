@@ -18,6 +18,10 @@ CORS(app)
 connection = None
 cursor = None
 
+@app.route('/',methods=['GET','POST'])
+def home():
+    return jsonify({"message":"It works!"})
+
 @app.route('/connect', methods=['POST'])
 def connect_to_database():
     """Handles initial database connection"""
