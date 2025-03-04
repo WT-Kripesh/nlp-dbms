@@ -10,16 +10,16 @@ const Footer = () => {
                 </div>
 
                 <div className="footer-social">
-                    <a href="#" target="_blank" rel="noopener noreferrer">
+                    <a href="https://facebook.com/kripesh.nihure.1" target="_blank" rel="noopener noreferrer">
                         <i className="fab fa-facebook-f"></i>
                     </a>
-                    <a href="#" target="_blank" rel="noopener noreferrer">
-                        <i className="fab fa-twitter"></i>
+                    <a href="https://instagram.com/kripesh_n" target="_blank" rel="noopener noreferrer">
+                        <i className="fab fa-instagram"></i>
                     </a>
-                    <a href="#" target="_blank" rel="noopener noreferrer">
+                    <a href="https://www.linkedin.com/in/kripesh-nihure77/" target="_blank" rel="noopener noreferrer">
                         <i className="fab fa-linkedin-in"></i>
                     </a>
-                    <a href="#" target="_blank" rel="noopener noreferrer">
+                    <a href="https://github.com/WT-Kripesh" target="_blank" rel="noopener noreferrer">
                         <i className="fab fa-github"></i>
                     </a>
                 </div>

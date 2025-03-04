@@ -1,5 +1,6 @@
 .login-container {
     padding: 2.3rem 2rem;
+    min-height:65vh;
     background-color: #f9f9f9;
     text-align: center;
     color: #333;

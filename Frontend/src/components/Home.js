@@ -1,23 +1,40 @@
-import React from "react";
-import {Link} from 'react-router-dom'
-import "./Home.css";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+
+import queryGPTImage from "./assets/querygpt.png";
 import logo from "./assets/logo.png";
+import "./Home.css";
+
 
 
 const Home = () => {
-
   return (
-  <section id="home" className="home-container">
+    <section id="home" className="home-container">
       <div className="home-content">
-        <img src={logo} alt="Project Logo" className="home-logo" />
-        <h1 className="home-title">
-          Natural language interface to Database Management System
-        </h1>
-        <p className="home-description">
-          Leveraging NLP to simplify database interactions by allowing to
-          communicate with the database using natural language queries. <Link to="/how-it-works">Learn more</Link>
-        </p>
-        <Link to="/get-started"><button className="cta-button">Get Started</button></Link>
+      <motion.div 
+          className="image-container"
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1 }}
+        >
+          <img src={queryGPTImage} alt="Query GPT" className="query-image" />
+          {/* <p className="image-caption">Powered by Query GPT</p> */}
+        </motion.div>
+        <motion.div 
+          className="text-content"
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1 }}
+        >
+          <img src={logo} alt="Project Logo" className="logo" />
+          <h1 className="title">NLP-Based Database Management System</h1>
+          <p className="description">
+            Use natural language to interact with databases effortlessly.
+            <Link to="/how-it-works" className="learn-more"> Learn more</Link>
+          </p>
+          <Link to="/get-started"><button className="cta-button">Get Started</button></Link>
+        </motion.div>
+
       </div>
     </section>
   );

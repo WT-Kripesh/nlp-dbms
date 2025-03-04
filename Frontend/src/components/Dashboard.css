@@ -1,7 +1,8 @@
+/* Dashboard.css */
 /* Dashboard Layout */
 .dashboard {
   min-height: 100vh;
-  background: linear-gradient(to bottom right, #111827, #1f2937);
+  background: linear-gradient(to bottom right, #111827, #848789);
   color: #f3f4f6;
   padding: 2rem;
 }
@@ -36,7 +37,80 @@
   border-radius: 0.75rem;
   padding: 1rem;
   margin-bottom: 1rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 6px -1px rgba(0, 0, 0, 0.1);
+  border: 1px solid #374151;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: white;
+}
+
+.card-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #60a5fa;
+}
+
+/* Form Elements */
+.formlabel {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: white;
+  margin-bottom: 0.5rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+/* Dashboard Layout
+.dashboard {
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, #111827, #848789);
+  color: #f3f4f6;
+  padding: 2rem;
+}
+
+.container {
+  max-width: 80rem;
+  margin: 0 auto;
+}
+
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.header-title {
+  font-size: 1.875rem;
+  font-weight: bold;
+}
+
+.header-icon {
+  width: 2rem;
+  height: 2rem;
+  color: #60a5fa;
+}
+
+
+.card {
+  background-color: #1f2937;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 6px 6px -1px rgba(0, 0, 0, 0.1);
   border: 1px solid #374151;
 }
 
@@ -59,7 +133,7 @@
   color: #60a5fa;
 }
 
-/* Database Section */
+
 .database-name {
   color: #60a5fa;
 }
@@ -118,9 +192,9 @@
   color: #d1d5db;
 }
 
-/* Query Section */
+
 .query-input {
-  width: 100%;
+  width: 98%;
   background-color: #111827;
   border: 1px solid #374151;
   border-radius: 0.5rem;
@@ -163,7 +237,7 @@
   background-color: #1d4ed8;
 }
 
-/* Results Table */
+
 .table-container {
   overflow-x: auto;
 }
@@ -193,7 +267,7 @@
   transition: background-color 0.2s;
 }
 
-/* Form Elements */
+
 .formlabel {
   display: block;
   font-size: 0.875rem;
@@ -204,4 +278,4 @@
 
 .form-group {
   margin-bottom: 1rem;
-}
+} */

@@ -4,7 +4,7 @@ import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Features from './components/Features';
 import Team from './components/Team';
-import Get_started from './components/LoginForm';
+import GetStarted from './components/LoginForm';
 import HowItWorks from './components/HowItWorks';
 import Dashboard from './components/Dashboard';
 import './App.css';
@@ -20,7 +20,7 @@ const App = () => {
       <Route path="/how-it-works" element={<HowItWorks />} />
       <Route path="/features" element={<Features />} />
       <Route path="/team" element={<Team />} />
-      <Route path="/get-started" element={<Get_started setFormData={setFormData} />} />
+      <Route path="/get-started" element={<GetStarted setFormData={setFormData} />} />
       <Route path="/dashboard" element={<Dashboard formData={formData}/>} />
     </Routes>
     <Footer />
