@@ -11,8 +11,18 @@ from database_structure import (
     find_all_columns
 )
 
+from transformers import T5Tokenizer, T5ForConditionalGeneration
+import torch
+
 app = Flask(__name__)
 CORS(app)
+
+# Load the fine-tuned T5 model and tokenizer
+model_name = "/kaggle/working/t5_sql_model"
+tokenizer = T5Tokenizer.from_pretrained(model_name)
+model = T5ForConditionalGeneration.from_pretrained(model_name)
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model.to(device)
 
 # Global connection and cursor
 connection = None
@@ -94,6 +104,25 @@ def process_query():
         return jsonify({"sql_query": sql_query, "results": json_results}), 200
     except Error as e:
         return jsonify({"error": str(e)}), 400
+    
+@app.route('/generate_query', methods=['POST'])
+def generate_query():
+    """Convert NL query to SQL using the fine-tuned T5 model"""
+    data = request.json
+    nl_query = data.get('query')
+    context = data.get('context')
+
+    if not nl_query or not context:
+        return jsonify({"error": "Query and context must be provided"}), 400
+
+    try:
+        input_text = f"Translate this query in english: \"{nl_query}\" to SQL considering the database tables: {context}"
+        input_ids = tokenizer(input_text, return_tensors="pt").input_ids.to(device)
+        output_ids = model.generate(input_ids, max_length=256, num_beams=5, early_stopping=True)
+        sql_query = tokenizer.decode(output_ids[0], skip_special_tokens=True)
+        return jsonify({"sql_query": sql_query}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=3001)
