@@ -1,1 +1,2 @@
 __pycache__/*
+files/t5_sql_model/*.safetensors
