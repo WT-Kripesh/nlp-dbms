@@ -1,5 +1,5 @@
 import React from 'react';
-import './Team.css';
+import './styles/Team.css';
 import avahan from './assets/avahan.png';
 import javed from './assets/javed.png';
 import kripesh from './assets/kripesh.jpeg';

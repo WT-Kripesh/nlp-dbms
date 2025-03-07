@@ -7,7 +7,7 @@ import Team from './components/Team';
 import GetStarted from './components/LoginForm';
 import HowItWorks from './components/HowItWorks';
 import Dashboard from './components/Dashboard';
-import './App.css';
+import './components/styles/App.css';
 import Footer from './components/Footer';
 
 const App = () => {

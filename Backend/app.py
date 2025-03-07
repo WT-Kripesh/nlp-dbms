@@ -8,7 +8,8 @@ from Query_generator import get_query
 from database_structure import (
     find_all_databases,
     find_all_tables,
-    find_all_columns
+    find_all_columns,
+    find_all_the_columns_with_datatype
 )
 
 from transformers import T5Tokenizer, T5ForConditionalGeneration
@@ -18,11 +19,9 @@ app = Flask(__name__)
 CORS(app)
 
 # Load the fine-tuned T5 model and tokenizer
-model_name = "/kaggle/working/t5_sql_model"
+model_name = "./files/t5_sql_model"
 tokenizer = T5Tokenizer.from_pretrained(model_name)
 model = T5ForConditionalGeneration.from_pretrained(model_name)
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model.to(device)
 
 # Global connection and cursor
 connection = None
@@ -82,47 +81,88 @@ def get_tables():
     except Error as e:
         return jsonify({"error": str(e)}), 400
 
-@app.route('/process_query', methods=['POST'])
-def process_query():
+@app.route('/generate_query', methods=['POST'])
+def generate_query():
     """Convert NL query to SQL and execute"""
     global cursor
     data = request.json
     nl_query = data.get('query')
     selected_db = data.get('database')
 
-    if not nl_query or not selected_db or not cursor:
+    if not nl_query or not selected_db:
+        return jsonify({"error": "Query and context must be provided"}), 400
+    try:
+        sql_query = get_query(nl_query, cursor, selected_db)
+        
+        return jsonify({"sql_query_nlp": sql_query}), 200
+    except Error as e:
+        return jsonify({"error": str(e)}), 400
+
+@app.route('/generate_query_ml', methods=['POST'])
+def generate_query_ml():
+    """Convert NL query to SQL and execute"""
+    global cursor
+    data = request.json
+    nl_query = data.get('query')
+    selected_db = data.get('database')
+    tables = find_all_tables(selected_db, cursor)
+    context = "\n".join(f"{table}: {', '.join(find_all_columns(selected_db, table, cursor))}" for table in tables)
+
+    if not nl_query or not context or not selected_db:
+        return jsonify({"error": "Query and context must be provided"}), 400
+    try:
+        input_text = f"Translate this query in english: \"{nl_query}\" to SQL considering the database tables: {context}"
+        input_ids = tokenizer(input_text, return_tensors="pt").input_ids
+        output_ids = model.generate(input_ids, max_length=256, num_beams=5, early_stopping=True)
+        sql_query_2 = tokenizer.decode(output_ids[0], skip_special_tokens=True)
+        
+        return jsonify({"sql_query_ml": sql_query_2 }), 200
+    except Error as e:
+        return jsonify({"error": str(e)}), 400
+
+@app.route('/execute_query', methods=['POST'])
+def execute_query():
+    """Convert NL query to SQL using the fine-tuned T5 model"""
+    data = request.json
+    sql_query = data.get('query')
+    selected_db = data.get('database')
+    exec_only = data.get('exec_only')
+    global cursor
+
+    if not sql_query or not selected_db or not cursor:
+        print('something is missing')
         return jsonify({"error": "Invalid input or no active connection"}), 400
 
     try:
-        sql_query = get_query(nl_query, cursor, selected_db)
         cursor.execute(sql_query)
+        if exec_only:
+            return jsonify({'message':'successful'}),200
         results = cursor.fetchall()
         column_names = [desc[0] for desc in cursor.description]
         df = pd.DataFrame(results)
         df.columns = column_names
         json_results = df.to_dict(orient="records")
-        return jsonify({"sql_query": sql_query, "results": json_results}), 200
-    except Error as e:
-        return jsonify({"error": str(e)}), 400
-    
-@app.route('/generate_query', methods=['POST'])
-def generate_query():
-    """Convert NL query to SQL using the fine-tuned T5 model"""
-    data = request.json
-    nl_query = data.get('query')
-    context = data.get('context')
-
-    if not nl_query or not context:
-        return jsonify({"error": "Query and context must be provided"}), 400
-
-    try:
-        input_text = f"Translate this query in english: \"{nl_query}\" to SQL considering the database tables: {context}"
-        input_ids = tokenizer(input_text, return_tensors="pt").input_ids.to(device)
-        output_ids = model.generate(input_ids, max_length=256, num_beams=5, early_stopping=True)
-        sql_query = tokenizer.decode(output_ids[0], skip_special_tokens=True)
-        return jsonify({"sql_query": sql_query}), 200
+        print(json_results)
+        return jsonify({"results": json_results}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+@app.route('/get-table-schema', methods=['POST'])
+def get_table_schema():
+    """Fetch detailed schema (column names and types) for a specific table"""
+    global cursor
+    data = request.json
+    selected_db = data.get('database')
+    table_name = data.get('table')
+
+    if not cursor or not selected_db or not table_name:
+        return jsonify({"error": "Invalid input or no active connection"}), 400
+
+    try:
+        schema_details = find_all_the_columns_with_datatype(selected_db,table_name,cursor)
+        return jsonify({"schema": schema_details}), 200
+    except Error as e:
+        return jsonify({"error": str(e)}), 400
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=3001)

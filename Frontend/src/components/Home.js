@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 import queryGPTImage from "./assets/querygpt.png";
 import logo from "./assets/logo.png";
-import "./Home.css";
+import "./styles/Home.css";
 
 
 

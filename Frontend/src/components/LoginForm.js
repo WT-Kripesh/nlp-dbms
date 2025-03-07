@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
 import { useNavigate } from 'react-router-dom';
-import './LoginForm.css';
+import './styles/LoginForm.css';
 import axios from 'axios';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:3001";
@@ -25,10 +25,10 @@ const LoginForm = ({ setFormData, setDatabases }) => {
             if (response.status===200) {
                 navigate('/dashboard', { state: { formData } });
             } else {
-                setResponseMessage('Failed to connect to the database.');
+                setResponseMessage('Invalid credentials');
             }
         } catch (error) {
-            setResponseMessage('Failed to connect to the database.');
+            setResponseMessage('Connection error');
             console.error('Error:', error);
         }
     };    

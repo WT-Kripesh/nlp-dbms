@@ -1,7 +1,7 @@
 # import sys
 # sys.path.insert(0,'/Users/kripesh/Developer/Projects/NLP-based-DBMS')
 from database_structure import find_total_information_of_selected_db
-from database_structure import find_all_the_columns_in_a_table_from_given_database_with_datatype
+from database_structure import find_all_the_columns_with_datatype
 
 import re
 
@@ -67,7 +67,7 @@ def tokenize_the_text(text, n):
 #table is selected based on the NL query. 
 def find_data_type_of_the_given_attribute(cursor, selected_db, from_clause, attribute):
 
-    columns_with_datatype = find_all_the_columns_in_a_table_from_given_database_with_datatype(selected_db, from_clause, cursor)
+    columns_with_datatype = find_all_the_columns_with_datatype(selected_db, from_clause, cursor)
 
     idx = None
     found = False

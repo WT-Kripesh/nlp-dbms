@@ -1,6 +1,6 @@
 // components/CreateTableModal.js
 import React, { useState } from "react";
-import "./Modals.css"; // Import the CSS file
+import "./Modals.css";
 
 const CreateTableModal = ({ onClose, onCreate }) => {
   const [tableName, setTableName] = useState("");
@@ -10,7 +10,6 @@ const CreateTableModal = ({ onClose, onCreate }) => {
     e.preventDefault();
     const columnsArray = columns.split(",").map((col) => col.trim());
     onCreate(tableName, columnsArray);
-    onClose();
   };
 
   return (

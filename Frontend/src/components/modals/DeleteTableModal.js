@@ -1,6 +1,6 @@
 // components/DeleteTableModal.js
 import React, { useState } from "react";
-import "./Modals.css"; // Import the CSS file
+import "./Modals.css";
 
 const DeleteTableModal = ({ onClose, onDelete }) => {
   const [username, setUsername] = useState("");
@@ -9,7 +9,6 @@ const DeleteTableModal = ({ onClose, onDelete }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     onDelete(username, password);
-    onClose();
   };
 
   return (

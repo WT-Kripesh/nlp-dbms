@@ -25,7 +25,7 @@ def find_all_columns(database_name, table_name,cursor):
     columns = [column[0] for column in columns]
     return columns
 
-def find_all_the_columns_in_a_table_from_given_database_with_datatype(database_name, table_name, cursor):
+def find_all_the_columns_with_datatype(database_name, table_name, cursor):
     cursor.execute(f"USE {database_name}")
     cursor.execute(f"DESCRIBE {table_name}")
     columns = cursor.fetchall()
@@ -57,7 +57,7 @@ def find_total_information_of_selected_db(db, cursor):
 
 def find_data_type_of_the_given_attribute(cursor, selected_db, from_clause, attribute):
 
-    columns_with_datatype = find_all_the_columns_in_a_table_from_given_database_with_datatype(selected_db, from_clause, cursor)
+    columns_with_datatype = find_all_the_columns_with_datatype(selected_db, from_clause, cursor)
 
     idx = None
     found = False
