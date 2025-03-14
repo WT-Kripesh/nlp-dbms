@@ -9,9 +9,7 @@
     font-weight: bold;
     color: #222;
     margin-bottom: 3rem;
-    text-transform: uppercase;
     letter-spacing: 2px;
-    position: relative;
 }
 
 .team-title::after {
@@ -28,7 +26,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 2.5rem;
-    padding: 0 1rem;
+    padding: 1 1rem;
 }
 
 .team-card {

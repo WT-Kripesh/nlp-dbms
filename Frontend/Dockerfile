@@ -1,4 +1,3 @@
-# Fetch the latest Node.js image
 FROM node:alpine AS builder
 
 # Set working directory
