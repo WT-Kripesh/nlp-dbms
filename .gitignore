@@ -1,0 +1,13 @@
+Backend/__pycache__/*
+Backend/demo
+
+
+Frontend/node_modules/*
+
+# Frontend/.DS_Store
+# Frontend/src/components/.DS_Store
+# Frontend/src/components/assets/.DS_Store
+
+*.DS_Store
+Backend/.DS_Store
+Backend/.DS_Store
