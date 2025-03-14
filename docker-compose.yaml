@@ -1,33 +1,40 @@
-version: "3.8"
+version: '3.8'
 
 services:
   frontend:
     build: ./Frontend
+    container_name: frontend
+    environment:
+      - REACT_APP_API_BASE_URL=http://20.3.247.134:3001/api
+    networks:
+      - app
     ports:
       - "80:80"
     depends_on:
       - backend
-    environment:
-      - REACT_APP_API_BASE_URL=http://20.3.247.134:3001
-    networks:
-      - app
 
   backend:
     build: ./Backend
+    container_name: backend
+    networks:
+      - app
     ports:
       - "3001:3001"
     depends_on:
-      - db
+      - mysql_db
+
+  mysql_db:
+    image: mysql:latest
+    container_name: mysql_db
+    restart: always
     networks:
       - app
-
-  database:
-    image: mysql:8.0
-    restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: mypassword
+      MYSQL_DATABASE: mydb
     ports:
       - "3306:3306"
-    networks:
-      - app
-    
+
+networks:
+  app:
+    driver: bridge
