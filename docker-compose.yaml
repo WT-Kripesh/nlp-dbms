@@ -5,7 +5,7 @@ services:
     build: ./Frontend
     container_name: frontend
     environment:
-      - REACT_APP_API_BASE_URL=http://20.3.247.134:3001/api
+      - REACT_APP_API_BASE_URL="http://20.3.247.134/api"
     networks:
       - app
     ports:
@@ -25,15 +25,16 @@ services:
 
   mysql_db:
     image: mysql:latest
-    container_name: mysql_db
+    container_name: database
     restart: always
     networks:
       - app
     environment:
       MYSQL_ROOT_PASSWORD: mypassword
-      MYSQL_DATABASE: mydb
     ports:
       - "3306:3306"
+    volumes:
+      - ./Backend/demo/:/docker-entrypoint-initdb.d/
 
 networks:
   app:
