@@ -12,16 +12,8 @@ from database_structure import (
     find_all_the_columns_with_datatype
 )
 
-from transformers import T5Tokenizer, T5ForConditionalGeneration
-import torch
-
 app = Flask(__name__)
 CORS(app)
-
-# Load the fine-tuned T5 model and tokenizer
-model_name = "./files/t5_sql_model"
-tokenizer = T5Tokenizer.from_pretrained(model_name)
-model = T5ForConditionalGeneration.from_pretrained(model_name)
 
 # Global connection and cursor
 connection = None
@@ -98,27 +90,6 @@ def generate_query():
     except Error as e:
         return jsonify({"error": str(e)}), 400
 
-@app.route('/generate_query_ml', methods=['POST'])
-def generate_query_ml():
-    """Convert NL query to SQL and execute"""
-    global cursor
-    data = request.json
-    nl_query = data.get('query')
-    selected_db = data.get('database')
-    tables = find_all_tables(selected_db, cursor)
-    context = "\n".join(f"{table}: {', '.join(find_all_columns(selected_db, table, cursor))}" for table in tables)
-
-    if not nl_query or not context or not selected_db:
-        return jsonify({"error": "Query and context must be provided"}), 400
-    try:
-        input_text = f"Translate this query in english: \"{nl_query}\" to SQL considering the database tables: {context}"
-        input_ids = tokenizer(input_text, return_tensors="pt").input_ids
-        output_ids = model.generate(input_ids, max_length=256, num_beams=5, early_stopping=True)
-        sql_query_2 = tokenizer.decode(output_ids[0], skip_special_tokens=True)
-        
-        return jsonify({"sql_query_ml": sql_query_2 }), 200
-    except Error as e:
-        return jsonify({"error": str(e)}), 400
 
 @app.route('/execute_query', methods=['POST'])
 def execute_query():
@@ -167,71 +138,3 @@ def get_table_schema():
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=3001)
 
-
-
-# from flask import Flask, request, jsonify
-# import mysql.connector
-# from mysql.connector import Error
-# from flask_cors import CORS
-
-# app = Flask(__name__)
-
-# # Enable CORS for all routes and origins
-# CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
-
-# @app.route('/connect', methods=['POST'])
-# def connect_to_database():
-#     # Get data from request
-#     print('reached backend!')
-#     data = request.json
-#     host = data.get('host')
-#     username = data.get('username')
-#     password = data.get('password')
-
-#     # Attempt to connect to MySQL
-#     try:
-#         connection = mysql.connector.connect(
-#             host=host,
-#             user=username,
-#             password=password
-#         )
-#         # cursor = connection.cursor()
-#         # system_databases = ['information_schema', 'mysql', 'performance_schema', 'sys']
-
-#         # cursor.execute("SHOW DATABASES")
-#         # databases = cursor.fetchall()
-#         # list_of_databases = [db[0] for db in databases if db[0] not in system_databases]
-#         # print(list_of_databases)       
-#         if connection.is_connected():
-#             return jsonify({"message": "Connected"}), 200
-#     except Error as e:
-#         return jsonify({"error": str(e)}), 400
-#     finally:
-#         if 'connection' in locals() and connection.is_connected():
-#             connection.close()
-
-# @app.route('/get-databases', methods=['POST'])
-# def get_databases():
-#     """Fetch available databases (excluding system databases)"""
-#     data = request.json
-#     host = data.get('host')
-#     username = data.get('username')
-#     password = data.get('password')
-
-# # Attempt to connect to MySQL
-#     connection = mysql.connector.connect(
-#         host=host,
-#         user=username,
-#         password=password
-#     )
-#     cursor = connection.cursor()
-#     system_databases = ['information_schema', 'mysql', 'performance_schema', 'sys']
-
-#     cursor.execute("SHOW DATABASES")
-#     databases = cursor.fetchall()
-#     list_of_databases = [db[0] for db in databases if db[0] not in system_databases]
-#     return jsonify({'databases':list_of_databases}),200
-
-# # Run the app
-# if __name__ == '__main__':
-#     app.run(host='0.0.0.0', port=3001)

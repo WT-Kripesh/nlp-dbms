@@ -21,6 +21,7 @@ const QueryHandler = ({ selectedDatabase}) => {
   const handleGenerate = async () => {
     setSqlQuery1("");
     setSqlQuery2("");
+    
     setMessage("Translating into SQL...")
     if (!selectedDatabase) {
       alert("Please select a database first.");
@@ -44,7 +45,9 @@ const QueryHandler = ({ selectedDatabase}) => {
   const MLgenerate = async () => {
     setResults([])
     setSqlQuery1("")
+
     setSqlQuery2("");
+    
     setMessage("Translating into SQL...")
     if (!selectedDatabase) {
       alert("Please select a database first.");
