@@ -6,21 +6,21 @@ system_databases = ['information_schema', 'mysql', 'performance_schema', 'sys']
 
 #fetch all databases in local DBMS
 def find_all_databases(cursor):
-    cursor.execute("SHOW DATABASES")
+    cursor.execute("SHOW DATABASES;")
     databases = cursor.fetchall()
     list_of_databases = [db[0] for db in databases if db[0] not in system_databases]
     return list_of_databases
 
 def find_all_tables(database_name,cursor):
     cursor.execute(f"USE {database_name}")
-    cursor.execute("SHOW TABLES")
+    cursor.execute("SHOW TABLES;")
     tables = cursor.fetchall()
     tables = [table[0] for table in tables]
     return tables
 
 def find_all_columns(database_name, table_name,cursor):
-    cursor.execute(f"USE {database_name}")
-    cursor.execute(f"DESCRIBE {table_name}")
+    cursor.execute(f"USE {database_name};")
+    cursor.execute(f"DESCRIBE {table_name};")
     columns = cursor.fetchall()
     columns = [column[0] for column in columns]
     return columns
