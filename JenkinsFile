@@ -1,23 +1,42 @@
 pipeline {
     agent any
 
-    environment {
-        FRONTEND_IMAGE = "my_frontend"
-        BACKEND_IMAGE = "my_backend"
-    }
-
     stages {
-        stage('Clone Repository') {
+        stage('Checkout') {
             steps {
-                git branch: 'light', url: 'https://github.com/WT-kripesh/nlp-dbms.git', depth: 1
+                checkout scm
             }
         }
 
-        stage('Build and Deploy') {
+        stage('Cleanup') {
             steps {
-                sh "docker-compose down"
-                sh "docker-compose up -d --build"
+                script {
+                    // Stop and remove existing containers
+                    sh '''
+                        docker-compose down
+                        # Additional cleanup in case docker-compose down didn't work
+                        docker rm -f mysql-db || true
+                    '''
+                }
             }
+        }
+
+        stage('Start Services') {
+            steps {
+                script {
+                    sh 'docker-compose up -d'
+                }
+            }
+        }
+    }
+
+    post {
+        failure {
+            sh 'docker-compose down'
+            echo 'Deployment failed'
+        }
+        success {
+            echo 'Deployment successful'
         }
     }
 }
