@@ -8,15 +8,10 @@ pipeline {
             }
         }
 
-        stage('Cleanup') {
+        stage('Build') {
             steps {
                 script {
-                    // Stop and remove existing containers
-                    sh '''
-                        docker-compose down
-                        # Additional cleanup in case docker-compose down didn't work
-                        docker rm -f mysql-db || true
-                    '''
+                    sh 'docker-compose build'
                 }
             }
         }
