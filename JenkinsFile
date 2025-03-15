@@ -1,0 +1,23 @@
+pipeline {
+    agent any
+
+    environment {
+        FRONTEND_IMAGE = "my_frontend"
+        BACKEND_IMAGE = "my_backend"
+    }
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git branch: 'light', url: 'https://github.com/WT-kripesh/nlp-dbms.git', depth: 1
+            }
+        }
+
+        stage('Build and Deploy') {
+            steps {
+                sh "docker-compose down"
+                sh "docker-compose up -d --build"
+            }
+        }
+    }
+}
