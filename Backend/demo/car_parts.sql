@@ -18,6 +18,8 @@
 --
 -- Table structure for table `items`
 --
+create database car_parts;
+use car_parts;
 
 DROP TABLE IF EXISTS `items`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;

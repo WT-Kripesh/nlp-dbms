@@ -4,7 +4,39 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
+                script {
+                    checkout([$class: 'GitSCM', branches: [[name: '*/light']], 
+                    userRemoteConfigs: [[url: 'https://github.com/WT-Kripesh/nlp-dbms.git']]])
+                }
+            }
+        }
+
+        stage('Cleanup') {
+            steps {
+                script {
+                    sh '''
+                        docker-compose down
+                        docker rm -f database || true
+                        docker volume prune -f || true
+                    '''
+                }
+            }
+        }
+
+        stage('Start MySQL') {
+            steps {
+                script {
+                    sh '''
+                        docker-compose up -d database
+                        
+                        # Wait for MySQL to be ready
+                        until docker exec database mysqladmin ping --host=localhost --silent; do
+                            echo 'Waiting for MySQL...'
+                            sleep 5
+                        done
+                        echo 'MySQL is ready!'
+                    '''
+                }
             }
         }
 
@@ -19,7 +51,7 @@ pipeline {
         stage('Start Services') {
             steps {
                 script {
-                    sh 'docker-compose up -d'
+                    sh 'docker-compose up -d --build'
                 }
             }
         }
