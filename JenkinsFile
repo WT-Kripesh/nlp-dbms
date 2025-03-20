@@ -11,47 +11,10 @@ pipeline {
             }
         }
 
-        stage('Cleanup') {
+        stage('Run Ansible Playbook') {
             steps {
                 script {
-                    sh '''
-                        docker-compose down
-                        docker rm -f database || true
-                        docker volume prune -f || true
-                    '''
-                }
-            }
-        }
-
-        stage('Start MySQL') {
-            steps {
-                script {
-                    sh '''
-                        docker-compose up -d database
-                        
-                        # Wait for MySQL to be ready
-                        until docker exec database mysqladmin ping --host=localhost --silent; do
-                            echo 'Waiting for MySQL...'
-                            sleep 5
-                        done
-                        echo 'MySQL is ready!'
-                    '''
-                }
-            }
-        }
-
-        stage('Build') {
-            steps {
-                script {
-                    sh 'docker-compose build'
-                }
-            }
-        }
-
-        stage('Start Services') {
-            steps {
-                script {
-                    sh 'docker-compose up -d --build'
+                    sh 'ansible-playbook /var/lib/jenkins/workspace/nlp-dbms/playbook.yaml'
                 }
             }
         }
@@ -59,7 +22,6 @@ pipeline {
 
     post {
         failure {
-            sh 'docker-compose down'
             echo 'Deployment failed'
         }
         success {

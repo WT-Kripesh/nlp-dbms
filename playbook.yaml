@@ -1,0 +1,29 @@
+---
+- name: Deploy NLP-based DBMS with Docker and MySQL
+  hosts: localhost
+  become: yes
+  tasks:
+
+    - name: Stop and remove existing containers
+      shell: |
+        docker-compose -f /var/lib/jenkins/workspace/nlp-dbms/docker-compose.yaml down
+        docker rm -f database || true
+        docker volume prune -f || true
+      ignore_errors: yes
+
+    - name: Start MySQL container
+      shell: |
+        docker-compose -f /var/lib/jenkins/workspace/nlp-dbms/docker-compose.yaml up -d database
+        until docker exec database mysqladmin ping --host=localhost --silent; do
+            echo 'Waiting for MySQL...'
+            sleep 5
+        done
+        echo 'MySQL is ready!'
+
+    - name: Build and start services
+      shell: |
+        docker-compose -f /var/lib/jenkins/workspace/nlp-dbms/docker-compose.yaml build
+        docker-compose -f /var/lib/jenkins/workspace/nlp-dbms/docker-compose.yaml up -d --build
+
+    - name: Verify running containers
+      shell: docker ps
