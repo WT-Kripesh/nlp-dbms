@@ -14,7 +14,7 @@ pipeline {
         stage('Run Ansible Playbook') {
             steps {
                 script {
-                    sh 'ansible-playbook /var/lib/jenkins/workspace/nlp-dbms/playbook.yaml'
+                    sh 'ansible-playbook /var/lib/jenkins/workspace/nlp-dbms-pipeline/playbook.yaml'
                 }
             }
         }
