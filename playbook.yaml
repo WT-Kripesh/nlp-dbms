@@ -6,9 +6,7 @@
 
     - name: Stop and remove existing containers
       shell: |
-        docker-compose -f /var/lib/jenkins/workspace/nlp-dbms-pipeline/docker-compose.yaml down
-        docker rm -f database || true
-        docker volume prune -f || true
+        docker-compose -f /var/lib/jenkins/workspace/nlp-dbms-pipeline/docker-compose.yaml down frontend backend
       ignore_errors: yes
 
     - name: Start MySQL container

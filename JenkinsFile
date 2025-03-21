@@ -2,14 +2,14 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
-            steps {
-                script {
-                    checkout([$class: 'GitSCM', branches: [[name: '*/light']], 
-                    userRemoteConfigs: [[url: 'https://github.com/WT-Kripesh/nlp-dbms.git']]])
-                }
-            }
-        }
+        // stage('Checkout') {
+        //     steps {
+        //         script {
+        //             checkout([$class: 'GitSCM', branches: [[name: '*/light']], 
+        //             userRemoteConfigs: [[url: 'https://github.com/WT-Kripesh/nlp-dbms.git']]])
+        //         }
+        //     }
+        // }
 
         stage('Run Ansible Playbook') {
             steps {

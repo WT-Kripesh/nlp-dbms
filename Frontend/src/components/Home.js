@@ -28,6 +28,7 @@ const Home = () => {
         >
           <img src={logo} alt="Project Logo" className="logo" />
           <h1 className="title">NLP-Based Database Management System</h1>
+          <p> CI/CD is awesome! Remove this for demo!</p>
           <p className="description">
             Use natural language to interact with databases effortlessly.
             <Link to="/how-it-works" className="learn-more"> Learn more</Link>
